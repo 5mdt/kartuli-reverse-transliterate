@@ -45,7 +45,7 @@ def latin_to_georgian(update: Update, context: CallbackContext) -> None:
         f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=uk&text={georgian_url}"
     )
 
-    response_message_1 = (
+    response_message = (
         f"You can copy text from here for paste it in your favorite translate app:\n"
         f"```\n{georgian_text}\n```\n"
         f"Or use these links to popular translate apps:\n"
@@ -70,7 +70,7 @@ def latin_to_georgian(update: Update, context: CallbackContext) -> None:
     )
 
     update.message.reply_text(
-        response_message_1, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+        response_message, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
     )
     update.message.reply_text(
         response_message_en, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
