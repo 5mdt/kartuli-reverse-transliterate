@@ -33,8 +33,18 @@ def latin_to_georgian(update: Update, context: CallbackContext) -> None:
     yandex_translate_link_ka_to_ru = (
         f"https://translate.yandex.com/?lang=ka-ru&text={georgian_url}"
     )
-    google_translate_link_ka_to_en = f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=en&text={georgian_url}"
-    google_translate_link_ka_to_ru = f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=en&text={georgian_url}"
+    yandex_translate_link_ka_to_uk = (
+        f"https://translate.yandex.com/?lang=ka-uk&text={georgian_url}"
+    )
+    google_translate_link_ka_to_en = (
+        f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=en&text={georgian_url}"
+    )
+    google_translate_link_ka_to_ru = (
+        f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=ru&text={georgian_url}"
+    )
+    google_translate_link_ka_to_uk = (
+        f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=uk&text={georgian_url}"
+    )
 
     response_message = (
         f"You can copy text from here for paste it in your favorite translate app:\n"
@@ -45,6 +55,9 @@ def latin_to_georgian(update: Update, context: CallbackContext) -> None:
         f"\n"
         f"- [Google.Translate KA🇬🇪>RU🇷🇺]({google_translate_link_ka_to_ru})\n"
         f"- [Yandex.Translate KA🇬🇪>RU🇷🇺]({yandex_translate_link_ka_to_ru})\n"
+        f"\n"
+        f"- [Google.Translate KA🇬🇪>UK🇺🇦]({google_translate_link_ka_to_uk})\n"
+        f"- [Yandex.Translate KA🇬🇪>UK🇺🇦]({yandex_translate_link_ka_to_uk})\n"
     )
 
     update.message.reply_text(
