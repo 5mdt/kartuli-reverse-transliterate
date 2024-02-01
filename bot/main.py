@@ -13,88 +13,75 @@ from urllib.parse import quote
 
 TOKEN = os.environ.get("BOT_TOKEN")
 
+# Mapping of language codes to flags
+LANGUAGE_FLAGS = {
+    "en": "🇬🇧",
+    "ru": "🇷🇺",
+    "uk": "🇺🇦",
+}
+
 
 def start(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(
-        "Welcome to the Kartuli Reverse Trasliterate Bot! Send me Latin text, and I will convert it to Georgian."
+        "Welcome to the Kartuli Reverse Transliterate Bot! Send me Latin text, and I will convert it to Georgian."
     )
+
+
+def generate_translate_link(language_code: str, georgian_url: str) -> str:
+    return f"https://translate.yandex.com/?lang=ka-{language_code}&text={georgian_url}"
 
 
 def latin_to_georgian(update: Update, context: CallbackContext) -> None:
-    latin_text = update.message.text
-    georgian_text = translit(latin_text, "ka")
+    try:
+        latin_text = update.message.text
+        georgian_text = translit(latin_text, "ka")
+        georgian_url = quote(georgian_text, safe="")
 
-    georgian_url = quote(georgian_text, safe="")
+        translate_languages = ["en", "ru", "uk"]
 
-    yandex_translate_link_ka_to_en = (
-        f"https://translate.yandex.com/?lang=ka-en&text={georgian_url}"
-    )
-    yandex_translate_link_ka_to_ru = (
-        f"https://translate.yandex.com/?lang=ka-ru&text={georgian_url}"
-    )
-    yandex_translate_link_ka_to_uk = (
-        f"https://translate.yandex.com/?lang=ka-uk&text={georgian_url}"
-    )
-    google_translate_link_ka_to_en = (
-        f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=en&text={georgian_url}"
-    )
-    google_translate_link_ka_to_ru = (
-        f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=ru&text={georgian_url}"
-    )
-    google_translate_link_ka_to_uk = (
-        f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=uk&text={georgian_url}"
-    )
+        # Send the plain Georgian text in the first message
+        response_message = (
+            f"You can copy text from here for paste it in your favorite translate app:\n"
+            f"```\n{georgian_text}\n```\n"
+        )
+        update.message.reply_text(
+            response_message, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+        )
 
-    response_message = (
-        f"You can copy text from here for paste it in your favorite translate app:\n"
-        f"```\n{georgian_text}\n```\n"
-        f"Or use these links to popular translate apps:\n"
-    )
+        for language_code in translate_languages:
+            translate_link = generate_translate_link(
+                language_code, georgian_url)
+            response_message = (
+                f"\n- {LANGUAGE_FLAGS[language_code]} {language_code.upper()} "
+                f"[Google.Translate]({translate_link})"
+            )
+            # Send each link as a separate message
+            update.message.reply_text(
+                response_message, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+            )
 
-    response_message_en = (
-        f"- EN🇬🇧 "
-        f"[Google.Translate]({google_translate_link_ka_to_en}) "
-        f"[Yandex.Translate]({yandex_translate_link_ka_to_en})"
-    )
+    except Exception as e:
+        error_message = "An error occurred while processing your request. Please try again later."
+        update.message.reply_text(error_message)
 
-    response_message_ru = (
-        f"- RU🇷🇺 "
-        f"[Google.Translate]({google_translate_link_ka_to_ru}) "
-        f"[Yandex.Translate]({yandex_translate_link_ka_to_ru})"
-    )
-
-    response_message_uk = (
-        f"- UK🇺🇦 "
-        f"[Google.Translate]({google_translate_link_ka_to_uk}) "
-        f"[Yandex.Translate]({yandex_translate_link_ka_to_uk})"
-    )
-
-    update.message.reply_text(
-        response_message, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
-    )
-    update.message.reply_text(
-        response_message_en, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
-    )
-    update.message.reply_text(
-        response_message_ru, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
-    )
-    update.message.reply_text(
-        response_message_uk, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
-    )
 
 def main() -> None:
-    if TOKEN is None:
-        raise ValueError("BOT_TOKEN environment variable is not set.")
+    try:
+        if TOKEN is None:
+            raise ValueError("BOT_TOKEN environment variable is not set.")
 
-    updater = Updater(TOKEN, use_context=True)
-    dp = updater.dispatcher
+        updater = Updater(TOKEN, use_context=True)
+        dp = updater.dispatcher
 
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(Filters.text & ~
-                   Filters.command, latin_to_georgian))
+        dp.add_handler(CommandHandler("start", start))
+        dp.add_handler(MessageHandler(Filters.text & ~
+                       Filters.command, latin_to_georgian))
 
-    updater.start_polling()
-    updater.idle()
+        updater.start_polling()
+        updater.idle()
+
+    except Exception as e:
+        print(f"Error in main: {e}")
 
 
 if __name__ == "__main__":
