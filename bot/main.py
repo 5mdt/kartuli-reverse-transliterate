@@ -22,7 +22,6 @@ def start(update: Update, context: CallbackContext) -> None:
 
 def latin_to_georgian(update: Update, context: CallbackContext) -> None:
     latin_text = update.message.text
-
     georgian_text = translit(latin_text, "ka")
 
     georgian_url = quote(georgian_text, safe="")
@@ -46,25 +45,42 @@ def latin_to_georgian(update: Update, context: CallbackContext) -> None:
         f"https://translate.google.com/#view=home&op=translate&sl=ka&tl=uk&text={georgian_url}"
     )
 
-    response_message = (
+    response_message_1 = (
         f"You can copy text from here for paste it in your favorite translate app:\n"
         f"```\n{georgian_text}\n```\n"
-        f"Or use this link to popular translate apps:"
-        f"\n- EN🇬🇧 "
+        f"Or use these links to popular translate apps:\n"
+    )
+
+    response_message_en = (
+        f"- EN🇬🇧 "
         f"[Google.Translate]({google_translate_link_ka_to_en}) "
-        f"[Yandex.Translate]({yandex_translate_link_ka_to_en}) "
-        f"\n- RU🇷🇺 "
+        f"[Yandex.Translate]({yandex_translate_link_ka_to_en})"
+    )
+
+    response_message_ru = (
+        f"- RU🇷🇺 "
         f"[Google.Translate]({google_translate_link_ka_to_ru}) "
-        f"[Yandex.Translate]({yandex_translate_link_ka_to_ru}) "
-        f"\n- UK🇺🇦 "
+        f"[Yandex.Translate]({yandex_translate_link_ka_to_ru})"
+    )
+
+    response_message_uk = (
+        f"- UK🇺🇦 "
         f"[Google.Translate]({google_translate_link_ka_to_uk}) "
-        f"[Yandex.Translate]({yandex_translate_link_ka_to_uk}) "
+        f"[Yandex.Translate]({yandex_translate_link_ka_to_uk})"
     )
 
     update.message.reply_text(
-        response_message, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+        response_message_1, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
     )
-
+    update.message.reply_text(
+        response_message_en, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+    )
+    update.message.reply_text(
+        response_message_ru, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+    )
+    update.message.reply_text(
+        response_message_uk, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+    )
 
 def main() -> None:
     if TOKEN is None:
