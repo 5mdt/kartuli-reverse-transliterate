@@ -49,15 +49,16 @@ def latin_to_georgian(update: Update, context: CallbackContext) -> None:
     response_message = (
         f"You can copy text from here for paste it in your favorite translate app:\n"
         f"```\n{georgian_text}\n```\n"
-        f"Or use this link to popular translate apps:\n"
-        f"- [Google.Translate KA🇬🇪>EN🇬🇧]({google_translate_link_ka_to_en})\n"
-        f"- [Yandex.Translate KA🇬🇪>EN🇬🇧]({yandex_translate_link_ka_to_en})\n"
-        f"\n"
-        f"- [Google.Translate KA🇬🇪>RU🇷🇺]({google_translate_link_ka_to_ru})\n"
-        f"- [Yandex.Translate KA🇬🇪>RU🇷🇺]({yandex_translate_link_ka_to_ru})\n"
-        f"\n"
-        f"- [Google.Translate KA🇬🇪>UK🇺🇦]({google_translate_link_ka_to_uk})\n"
-        f"- [Yandex.Translate KA🇬🇪>UK🇺🇦]({yandex_translate_link_ka_to_uk})\n"
+        f"Or use this link to popular translate apps:"
+        f"\n- EN🇬🇧 "
+        f"[Google.Translate]({google_translate_link_ka_to_en}) "
+        f"[Yandex.Translate]({yandex_translate_link_ka_to_en}) "
+        f"\n- RU🇷🇺 "
+        f"[Google.Translate]({google_translate_link_ka_to_ru}) "
+        f"[Yandex.Translate]({yandex_translate_link_ka_to_ru}) "
+        f"\n- UK🇺🇦 "
+        f"[Google.Translate]({google_translate_link_ka_to_uk}) "
+        f"[Yandex.Translate]({yandex_translate_link_ka_to_uk}) "
     )
 
     update.message.reply_text(
