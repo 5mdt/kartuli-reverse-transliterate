@@ -4,10 +4,10 @@ services:
     build: bot/
     environment:
       BOT_TOKEN: $BOT_TOKEN
-      BASE_URL: $BASE_URL
     logging:
       driver: "json-file"
       options:
         max-file: "3"
         max-size: "1m"
+    restart: always
 version: "3"
