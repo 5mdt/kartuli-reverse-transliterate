@@ -1,5 +1,7 @@
 # Kartuli Reverse Transliterate Bot
 
+![Logo](logo.png)
+
 This Telegram bot converts Latin text to Georgian and provides translation links to popular translation apps.
 
 ## Getting Started
